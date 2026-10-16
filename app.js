@@ -29,7 +29,7 @@ function videoId(v) {
 }
 
 
-// ---- YouTube：サムネイル → クリックで再生。失敗・無反応は理由つきでリンクに切り替える ----
+// ---- YouTube：ページ内で再生し、止まったら自動で立て直す ----
 let ytApi;
 function loadYtApi() {
   if (ytApi) return ytApi;
@@ -65,11 +65,17 @@ function vlog(el, msg) {
 async function probeNetwork(el) {
   const targets = [
     ["YouTube本体", "https://www.youtube.com/favicon.ico"],
+    ["YouTube(nocookie)", "https://www.youtube-nocookie.com/favicon.ico"],
     ["サムネイル", "https://i.ytimg.com/vi/k7wr-aqHVOk/default.jpg"],
     ["広告(doubleclick)", "https://static.doubleclick.net/instream/ad_status.js"],
     ["広告(googleads)", "https://googleads.g.doubleclick.net/pagead/id"],
+    ["広告SDK(imasdk)", "https://imasdk.googleapis.com/js/sdkloader/ima3.js"],
+    ["広告(googlesyndication)", "https://pagead2.googlesyndication.com/pagead/show_ads.js"],
     ["統計(s.youtube)", "https://s.youtube.com/api/stats/qoe"]
   ];
+  const ua = navigator.userAgent;
+  const br = (ua.match(/Edg\/[\d.]+/) || ua.match(/Chrome\/[\d.]+/) || ua.match(/Firefox\/[\d.]+/) || ["不明"])[0];
+  vlog(el, `ブラウザ: ${br}  Cookie: ${navigator.cookieEnabled ? "有効" : "無効"}`);
   for (const [name, url] of targets) {
     const t = performance.now();
     try { await fetch(url, { mode: "no-cors", cache: "no-store" }); vlog(el, `通信OK  ${name} (${Math.round(performance.now() - t)}ms)`); }
@@ -83,10 +89,12 @@ function startPlayer(el, id) {
   videoNote(el, "読み込み中…");
   el.classList.remove("facade"); el.style.backgroundImage = "";
   if (DEBUG) probeNetwork(el);
-  let player, lastT = -1, stuck = 0, wait0 = 0, retries = 0, watch, started = false, autoMuted = false;
+  let player, lastT = -1, stuck = 0, wait0 = 0, retries = 0, watch, started = false, autoMuted = false, prev = null, adFails = 0;
 
   loadYtApi().then(() => {
     player = new YT.Player(`yt-${el.dataset.video}`, {
+      // 追跡防止（Edge 等）の影響を受けにくい nocookie ドメインのプレーヤーを使う
+      host: "https://www.youtube-nocookie.com",
       videoId: id, width: "100%", height: "100%",
       playerVars: { rel: 0, playsinline: 1, origin: location.origin },
       events: {
@@ -94,6 +102,9 @@ function startPlayer(el, id) {
         onStateChange: e => {
           vlog(el, `状態: ${YT_STATE[e.data] ?? e.data}  位置 ${player.getCurrentTime().toFixed(1)}s`);
           if (e.data === 1 && !autoMuted) videoNote(el, "");
+          // 本編前に「読み込み中 → 未開始」へ戻る＝広告の読み込みに失敗してプレーヤーがリセットされた
+          if (!started && prev === 3 && e.data === -1) adFailed();
+          prev = e.data;
         },
         onError: e => {
           const why = YT_ERR[e.data] || "エラーコード " + e.data;
@@ -105,6 +116,23 @@ function startPlayer(el, id) {
       }
     });
   }).catch(() => { videoNote(el, "YouTubeのスクリプトを読み込めません（社内フィルタ等で遮断されている可能性）"); vlog(el, "iframe_api 読み込み失敗"); });
+
+  // 広告失敗からの立て直し：1回目は読み直し、2回目は消音で読み直し（消音なら自動再生が通りやすい）
+  function adFailed() {
+    adFails++;
+    if (adFails === 1) {
+      vlog(el, "広告の読み込みに失敗 → 動画を読み直して再試行");
+      videoNote(el, "広告を読み込めなかったため、もう一度読み込んでいます…");
+      player.loadVideoById(id);
+    } else if (adFails === 2) {
+      vlog(el, "広告の読み込みに再度失敗 → 消音にして読み直し");
+      autoMuted = true; player.mute(); player.loadVideoById(id);
+      videoNote(el, "消音で再生を試しています。再生されたら動画内の 🔊 で音が出ます");
+    } else {
+      vlog(el, "広告の読み込みに3回失敗 → 停止（広告ブロック/追跡防止/社内フィルタの可能性）");
+      videoNote(el, "広告を読み込めず再生できません。広告ブロック拡張・ブラウザの追跡防止・社内フィルタの設定が原因の可能性があります");
+    }
+  }
 
   // 見張り：再生中/読み込み中なのに位置が進まない状態が続いたら、自動で立て直す
   function startWatch() {
