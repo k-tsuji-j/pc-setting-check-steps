@@ -28,6 +28,50 @@ function videoId(v) {
   return /^[\w-]{11}$/.test(v) ? v : "";
 }
 
+
+// ---- YouTube：サムネイル → クリックで再生。失敗・無反応は理由つきでリンクに切り替える ----
+let ytApi;
+function loadYtApi() {
+  if (ytApi) return ytApi;
+  ytApi = new Promise((resolve, reject) => {
+    if (window.YT && window.YT.Player) return resolve();
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (prev) prev(); resolve(); };
+    const sc = document.createElement("script");
+    sc.src = "https://www.youtube.com/iframe_api";
+    sc.onerror = () => reject(new Error("api-blocked"));
+    document.head.appendChild(sc);
+  });
+  return ytApi;
+}
+function showFacade(el, id) {
+  el.classList.add("facade");
+  el.style.backgroundImage = `url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)`;
+  el.innerHTML = `<button type="button" class="facadebtn" aria-label="動画を再生"><span>▶</span></button>`;
+  el.querySelector("button").addEventListener("click", () => startPlayer(el, id));
+}
+function failVideo(el, id, why) {
+  el.classList.remove("facade"); el.classList.add("empty"); el.style.backgroundImage = "";
+  el.innerHTML = `<div>動画を再生できませんでした（${why}）。<br><br>` +
+    `<a class="btn primary" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTubeで動画を見る</a></div>`;
+}
+const YT_ERR = { 2: "動画IDが不正", 5: "プレーヤーエラー", 100: "動画が見つからない/非公開", 101: "埋め込み禁止", 150: "埋め込み禁止", 153: "参照元(リファラ)なし" };
+function startPlayer(el, id) {
+  el.innerHTML = `<div class="loading">読み込み中…</div><div id="yt-${el.dataset.video}"></div>`;
+  el.classList.add("playing");
+  const timer = setTimeout(() => failVideo(el, id, "応答なし：社内ネットワークやブラウザ拡張でYouTubeが遮断されている可能性"), 10000);
+  loadYtApi().then(() => {
+    new YT.Player(`yt-${el.dataset.video}`, {
+      videoId: id, width: "100%", height: "100%",
+      playerVars: { rel: 0, playsinline: 1, autoplay: 1, origin: location.origin },
+      events: {
+        onReady: e => { clearTimeout(timer); const l = el.querySelector(".loading"); if (l) l.remove(); e.target.playVideo(); },
+        onError: e => { clearTimeout(timer); failVideo(el, id, YT_ERR[e.data] || "エラーコード " + e.data); }
+      }
+    });
+  }).catch(() => { clearTimeout(timer); failVideo(el, id, "YouTubeのスクリプトを読み込めません"); });
+}
+
 function renderStepper(current) {
   const ol = document.querySelector(".stepper");
   if (!ol) return;
@@ -57,9 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
         el.innerHTML = `<div><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" style="max-width:60%;border-radius:8px"><br>` +
           `<a class="btn primary" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTubeで動画を見る</a></div>`;
       } else if (id) {
-        const origin = encodeURIComponent(location.origin);
-        el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0&playsinline=1&origin=${origin}" title="解説動画" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        el.insertAdjacentHTML("afterend", `<p class="vlink"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">表示されない場合は、YouTubeで開く</a></p>`);
+        showFacade(el, id);
+        el.insertAdjacentHTML("afterend", `<p class="vlink"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">再生できない場合は、YouTubeで開く</a></p>`);
       } else {
         el.classList.add("empty");
         el.textContent = "動画は準備中です（app.js の VIDEOS にYouTubeのURLを設定すると表示されます）";
