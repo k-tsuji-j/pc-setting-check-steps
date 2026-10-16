@@ -220,3 +220,7 @@ details.help .video, details.help .vlink { max-width: 720px; }
 .facadebtn:hover { background: rgba(0,0,0,.1); }
 .video.playing .loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; z-index: 0; }
 .video.playing iframe { z-index: 1; }
+
+.vnote { position: absolute; left: 10px; bottom: 10px; z-index: 2; background: rgba(0,0,0,.75); color: #fff; font-size: 14px; padding: 4px 12px; border-radius: 8px; pointer-events: none; }
+.vnote[hidden] { display: none; }
+.vdebug { max-width: 720px; max-height: 220px; overflow: auto; background: #111; color: #9f9; font-size: 12px; padding: 8px 10px; border-radius: 8px; white-space: pre-wrap; }
