@@ -263,3 +263,37 @@ section.help .video, section.help .vlink, section.help .vdebug { max-width: 860p
 .pairgrid img.bar { max-width: 400px; }
 .pairgrid > div { align-self: start; }
 @media (max-width: 900px) { .row.figs2, .pairgrid { grid-template-columns: 1fr; } }
+
+/* ===== ステップページ：ゴール → やり方 を左、動きの図を右に並べて一目で見渡せる構成 ===== */
+.layout { display: grid; grid-template-columns: 1fr 1.15fr; gap: 20px; align-items: start; margin-top: 12px; }
+.layout > .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.layout > .col:last-child { position: sticky; top: 96px; }
+.blk { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.blk h2 { margin: 0 0 12px; font-size: 18px; gap: 10px; }
+.blk h2 .num { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; align-items: center; justify-content: center; font-size: 15px; background: var(--accent); color: #fff; }
+.goalblk { border: 2px solid var(--ok); }
+.goalblk h2 .num { background: var(--ok); }
+.goalblk ul.check { margin-top: 12px; }
+.blk .steps > li { margin-bottom: 4px; }
+
+details.howto { margin-top: 12px; }
+details.howto summary {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none;
+  font-weight: 700; font-size: 15px; color: var(--accent); padding: 6px 14px;
+  border: 1.5px solid var(--accent); border-radius: 999px;
+}
+details.howto summary::-webkit-details-marker { display: none; }
+details.howto summary::before { content: "＋"; }
+details.howto[open] summary::before { content: "－"; }
+details.howto .fig.pair { margin-top: 12px; }
+details.howto .pairgrid { grid-template-columns: 1fr; }
+details.howto .pairgrid img.bar { max-width: 360px; }
+
+.videoblk { margin-top: 20px; }
+.videoblk .video, .videoblk .vlink, .videoblk .vdebug { max-width: 860px; }
+.videoblk h2 { font-size: 17px; }
+
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; }
+  .layout > .col:last-child { position: static; }
+}
