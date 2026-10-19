@@ -309,3 +309,35 @@ details.howto .pairgrid img.bar { max-width: 360px; }
 #finishNg .finishmsg { color: var(--text); font-size: 17px; font-weight: 400; }
 .finishnote { font-size: 15px; color: var(--muted); margin: 14px 0 0; }
 .finishnote[hidden] { display: none; }
+
+/* ===== STEP1：実際の Chrome に近いタブの閉じ方（マウスを乗せる → ✕ → タブが横に縮んで消え、右のタブが詰まる） ===== */
+.a1-t2, .a1-t3, .a1-t4 { transform-origin: left center; }
+.a1-t2-hv, .a1-t3-hv, .a1-t4-hv { opacity: 0; }
+.stage.playing .a1-t2-hv { animation: a1h2 9s linear forwards; }
+.stage.playing .a1-t3-hv { animation: a1h3 9s linear forwards; }
+.stage.playing .a1-t4-hv { animation: a1h4 9s linear forwards; }
+.stage.playing .a1-plus { animation: a1plus 9s ease-out forwards; }
+@keyframes a1h2 { 0%,13%{opacity:0} 15%,20%{opacity:1} 21%,100%{opacity:0} }
+@keyframes a1h3 { 0%,41%{opacity:0} 43%,48%{opacity:1} 49%,100%{opacity:0} }
+@keyframes a1h4 { 0%,69%{opacity:0} 71%,76%{opacity:1} 77%,100%{opacity:0} }
+@keyframes a1t2 { 0%,20%{transform:scaleX(1);opacity:1} 24%{opacity:1} 25%,100%{transform:scaleX(0);opacity:0} }
+@keyframes a1t3 { 0%,20%{transform:translateX(0) scaleX(1);opacity:1} 25%,48%{transform:translateX(-144px) scaleX(1);opacity:1} 52%{opacity:1} 53%,100%{transform:translateX(-144px) scaleX(0);opacity:0} }
+@keyframes a1t4 { 0%,20%{transform:translateX(0) scaleX(1);opacity:1} 25%,48%{transform:translateX(-144px) scaleX(1)} 53%,76%{transform:translateX(-288px) scaleX(1);opacity:1} 80%{opacity:1} 81%,100%{transform:translateX(-288px) scaleX(0);opacity:0} }
+@keyframes a1plus { 0%,20%{transform:translateX(0)} 25%,48%{transform:translateX(-144px)} 53%,76%{transform:translateX(-288px)} 81%,100%{transform:translateX(-432px)} }
+@keyframes a1end { 0%,84%{opacity:0} 90%,100%{opacity:1} }
+
+/* ===== 右の動きの図を、左（ゴール＋やり方）の底と揃える ===== */
+.layout { align-items: stretch; }
+.layout > .col:last-child { position: static; }
+.layout > .col:first-child > .blk:last-child { flex: 1; }
+.layout > .col:last-child > .fig.anim { flex: 1; display: flex; flex-direction: column; margin: 0; }
+.layout .fig.anim .stage { flex: 1; display: flex; border-radius: 10px; border: 1px solid var(--line); overflow: hidden; }
+.layout .fig.anim .stage svg { width: 100%; height: 100%; border: 0; border-radius: 0; }
+
+/* ===== ゴールを主役に：緑の面・大きな見出し・アフター側を強調 ===== */
+.goalblk { background: var(--ok-soft); border: 2px solid var(--ok); box-shadow: 0 6px 20px rgba(26,143,76,.15); }
+.goalblk h2 { font-size: 21px; color: var(--ok); }
+.goaltag { display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .08em; padding: 3px 10px; border-radius: 6px; background: var(--ok); color: #fff; }
+.goalblk .fig svg { border-color: var(--ok); }
+.goalblk ul.check li { font-weight: 700; }
+.grid3 .goalcap { font-size: 15px; }
