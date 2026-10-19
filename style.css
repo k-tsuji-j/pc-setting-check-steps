@@ -159,7 +159,7 @@ details.help .video, details.help .vlink { max-width: 720px; }
 .a1-cur { transform: translate(560px,170px); }
 .a1-rip, .a2-rip1, .a2-rip2, .a3-rip1, .a3-rip2 { opacity: 0; transform-box: fill-box; transform-origin: center; }
 .a1-end, .a2-end, .a3-end, .a2-menu { opacity: 0; }
-.a2-cur { transform: translate(620px,240px); }
+.a2-cur { transform: translate(650px,120px); }
 .a3-cur { transform: translate(620px,300px); }
 .a3-w1-x, .a3-w2-x, .a3-w3-x, .a3-w4-x { opacity: 0; }
 .a2-icon { transform-origin: center; }
@@ -186,7 +186,7 @@ details.help .video, details.help .vlink { max-width: 720px; }
 .stage.playing .a2-menu { animation: a2menu 8s linear forwards; }
 .stage.playing .a2-icon { animation: a2icon 8s ease-in forwards; }
 .stage.playing .a2-end { animation: a2end 8s linear forwards; }
-@keyframes a2cur { 0%{transform:translate(620px,240px)} 16%,22%{transform:translate(506px,166px)} 40%,100%{transform:translate(592px,198px)} }
+@keyframes a2cur { 0%{transform:translate(650px,120px)} 16%,22%{transform:translate(506px,232px)} 40%,100%{transform:translate(598px,248px)} }
 @keyframes a2rip1 { 0%,17%{opacity:0;transform:scale(.5)} 18%{opacity:1;transform:scale(.6)} 25%,100%{opacity:0;transform:scale(2.2)} }
 @keyframes a2menu { 0%,22%{opacity:0} 26%,52%{opacity:1} 56%,100%{opacity:0} }
 @keyframes a2rip2 { 0%,43%{opacity:0;transform:scale(.5)} 44%{opacity:1;transform:scale(.6)} 51%,100%{opacity:0;transform:scale(2.2)} }
@@ -250,3 +250,16 @@ section.help .video, section.help .vlink, section.help .vdebug { max-width: 860p
   .playbtn { font-size: 15px; padding: 8px 16px; white-space: nowrap; }
   h1 { font-size: 22px; }
 }
+
+/* 手順の補足図（方法A／方法B を並べる） */
+.row.figs2 { grid-template-columns: 1fr 1fr; margin-top: 16px; }
+.row.figs2 .fig.pair { grid-column: 1 / -1; }
+.figttl { font-size: 16px !important; font-weight: 700; color: var(--text) !important; margin: 0 0 6px !important; }
+.pairgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.pairgrid > div { display: flex; flex-direction: column; gap: 8px; }
+.pairgrid img { width: 100%; height: auto; display: block; border-radius: 6px; }
+.mlabel { font-weight: 700; font-size: 15px; }
+.mlabel b { color: var(--accent); }
+.pairgrid img.bar { max-width: 400px; }
+.pairgrid > div { align-self: start; }
+@media (max-width: 900px) { .row.figs2, .pairgrid { grid-template-columns: 1fr; } }
