@@ -273,6 +273,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("count").textContent = `${doneCount} / ${STEPS.length} 完了`;
     document.getElementById("allok").classList.toggle("show", doneCount === STEPS.length);
   }
+  // 終了ページ：すべて完了なら「閉じてください」、未完了があればその案内
+  const finishOk = document.getElementById("finishOk");
+  if (finishOk) {
+    const all = doneCount === STEPS.length;
+    finishOk.hidden = !all;
+    document.getElementById("finishNg").hidden = all;
+    document.getElementById("closeBtn").addEventListener("click", () => {
+      window.close(); // スクリプトで開いたタブ以外はブラウザが閉じさせないため、閉じなければ案内を出す
+      setTimeout(() => { document.getElementById("closeNote").hidden = false; }, 300);
+    });
+  }
+
   const reset = document.getElementById("resetBtn");
   if (reset) reset.addEventListener("click", () => {
     STEPS.forEach(s => store.set(s.id, false));

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>確認完了 | PC設定確認ステップ</title>
+<link rel="stylesheet" href="style.css?v=202610191327">
+</head>
+<body data-step="done" class="donepage">
+<header class="top"><div class="wrap"><span class="brand">PC設定確認ステップ</span><ol class="stepper"></ol></div></header>
+<main class="wrap">
+  <section class="finish" id="finishOk">
+    <div class="finishmark" aria-hidden="true">✓</div>
+    <h1>すべての確認が終わりました</h1>
+    <p class="finishmsg">このページを閉じてください。</p>
+    <button class="btn primary" id="closeBtn" type="button">ページを閉じる</button>
+    <p class="finishnote" id="closeNote" hidden>閉じられない場合は、ブラウザのタブの ✕ を押して閉じてください。</p>
+  </section>
+  <section class="finish" id="finishNg" hidden>
+    <h1>まだ終わっていないステップがあります</h1>
+    <p class="finishmsg">上の未完了のステップを開いて、完了にしてください。</p>
+  </section>
+</main>
+<script src="app.js?v=202610191327"></script>
+</body>
+</html>

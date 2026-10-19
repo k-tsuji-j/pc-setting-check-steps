@@ -297,3 +297,15 @@ details.howto .pairgrid img.bar { max-width: 360px; }
   .layout { grid-template-columns: 1fr; }
   .layout > .col:last-child { position: static; }
 }
+
+/* ===== 終了ページ ===== */
+.donepage { padding-bottom: 40px; }
+.finish { max-width: 640px; margin: 48px auto; text-align: center; background: var(--card); border: 2px solid var(--ok); border-radius: 18px; padding: 40px 24px; }
+.finish[hidden] { display: none; }
+#finishNg { border-color: var(--warn-line); }
+.finishmark { width: 88px; height: 88px; margin: 0 auto 16px; border-radius: 50%; background: var(--ok); color: #fff; font-size: 48px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.finish h1 { font-size: 28px; margin: 0 0 8px; }
+.finishmsg { font-size: 22px; font-weight: 700; color: var(--ok); margin: 0 0 24px; }
+#finishNg .finishmsg { color: var(--text); font-size: 17px; font-weight: 400; }
+.finishnote { font-size: 15px; color: var(--muted); margin: 14px 0 0; }
+.finishnote[hidden] { display: none; }
