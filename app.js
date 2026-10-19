@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const current = document.body.dataset.step || "";
   renderStepper(current);
 
-  // 動画：<details> を開いた時にはじめて読み込む（ページ表示を YouTube で待たせない）
+  // 動画
   document.querySelectorAll(".video[data-video]").forEach(el => {
     const id = videoId(VIDEOS[el.dataset.video]);
     const details = el.closest("details");
@@ -207,9 +207,13 @@ document.addEventListener("DOMContentLoaded", () => {
         el.textContent = "動画は準備中です（app.js の VIDEOS にYouTubeのURLを設定すると表示されます）";
       }
     };
+    // 画面に近づいたら読み込む（ページの表示を YouTube で待たせない）
     if (details) details.addEventListener("toggle", () => { if (details.open) load(); });
-    if (details && details.open) load();
-    else load();
+    if (details && !details.open) return;
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "300px" });
+      io.observe(el);
+    } else load();
   });
 
   // 手順アニメーション（▶ で再生、終わったら「もう一度」）
