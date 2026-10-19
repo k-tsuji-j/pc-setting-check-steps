@@ -314,8 +314,10 @@ main { padding-block: 16px 104px; }
 .vdlg-head h2 { font-size: 1.125rem; }
 .vclose { width: 44px; height: 44px; border-radius: 50%; border: 0; background: none; cursor: pointer; color: var(--text-2); display: grid; place-items: center; }
 .vclose:hover { background: var(--surface); }
-.vdlg .vbox { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 12px; }
-.vdlg iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.vdlg .vbox { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+.vdlg iframe, .vdlg video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.verr { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: #fff; }
+button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
 </style>
 
 </head>
@@ -380,7 +382,7 @@ main { padding-block: 16px 104px; }
 
   <aside class="video sheet">
     <div class="vtext"><h2 class="sec">うまくできない場合は、動画で確認</h2><p>同じ手順を動画で最初から確認できます。</p></div>
-    <a class="vlink" href="https://www.youtube.com/watch?v=k7wr-aqHVOk" target="_blank" rel="noopener" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</a>
+    <button type="button" class="vlink" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</button>
   </aside>
 </section>
 <section class="panel" id="p-step2" data-step="step2" hidden>
@@ -433,7 +435,7 @@ main { padding-block: 16px 104px; }
 
   <aside class="video sheet">
     <div class="vtext"><h2 class="sec">うまくできない場合は、動画で確認</h2><p>同じ手順を動画で最初から確認できます。</p></div>
-    <a class="vlink" href="https://www.youtube.com/watch?v=k7wr-aqHVOk" target="_blank" rel="noopener" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</a>
+    <button type="button" class="vlink" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</button>
   </aside>
 </section>
 <section class="panel" id="p-step3" data-step="step3" hidden>
@@ -484,7 +486,7 @@ main { padding-block: 16px 104px; }
 
   <aside class="video sheet">
     <div class="vtext"><h2 class="sec">うまくできない場合は、動画で確認</h2><p>同じ手順を動画で最初から確認できます。</p></div>
-    <a class="vlink" href="https://www.youtube.com/watch?v=k7wr-aqHVOk" target="_blank" rel="noopener" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</a>
+    <button type="button" class="vlink" data-video><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor" stroke="none"/></svg>動画を見る</button>
   </aside>
 </section>
 <section class="panel" id="p-done" data-step="done" hidden>
@@ -500,7 +502,7 @@ main { padding-block: 16px 104px; }
 </section>
   <p class="trust"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>このページは、受験前にパソコンの状態を整えるための手順です。設定やファイルを変更することはなく、閉じたタブやアプリはあとから開き直せます。</span></p>
 </main>
-<dialog class="vdlg" id="vdlg"><div class="vdlg-head"><h2>うまくできない場合は、動画で確認</h2><button type="button" class="vclose" id="vclose" aria-label="閉じる"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="vbox"><iframe id="vframe" title="解説動画" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><a class="vlink" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">再生できない場合は、YouTubeで開く</a></dialog>
+<dialog class="vdlg" id="vdlg" aria-labelledby="vdlgT"><div class="vdlg-head"><h2 id="vdlgT">うまくできない場合は、動画で確認</h2><button type="button" class="vclose" id="vclose" aria-label="閉じる"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="vbox"><video id="vplay" controls playsinline preload="metadata" hidden></video><iframe id="vframe" title="解説動画" referrerpolicy="strict-origin-when-cross-origin" hidden allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p class="verr" id="verr" hidden>動画を読み込めませんでした。通信状態を確認し、閉じてからもう一度「動画を見る」を押してください。</p></div></dialog>
 <div class="snack" id="snack" role="status" aria-live="polite" hidden><span id="snackMsg"></span><button type="button" id="undo">元に戻す</button></div>
 
 <nav class="bar" aria-label="ステップの操作"><div class="wrap">
@@ -577,5 +579,5 @@ main { padding-block: 16px 104px; }
   render();
 })();
 </script>
-<script>(()=>{const d=document.getElementById('vdlg'),f=document.getElementById('vframe');document.querySelectorAll('[data-video]').forEach(a=>a.addEventListener('click',e=>{if(!d.showModal)return;e.preventDefault();if(!f.getAttribute('src'))f.src='https://www.youtube.com/embed/XXXXXXXXXXX?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);d.showModal();}));const close=()=>{d.close();f.removeAttribute('src');};document.getElementById('vclose').addEventListener('click',close);d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('cancel',()=>f.removeAttribute('src'));})();</script></body>
+<script>(()=>{const S={"step1": {"yt": "k7wr-aqHVOk"}, "step2": {"yt": "k7wr-aqHVOk"}, "step3": {"yt": "k7wr-aqHVOk"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();d.close?d.close():d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);})();</script></body>
 </html>
