@@ -643,6 +643,7 @@ button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
     next.href = "#" + (idx < 2 ? IDS[idx + 1] : "done");
     next.textContent = idx < 2 ? "次へ →" : "確認を終える →";
     next.setAttribute("aria-disabled", on ? "false" : "true");
+    if (on) next.removeAttribute("tabindex"); else next.setAttribute("tabindex", "-1");
   }
   let snackT;
   function snack(msg, c) {
@@ -650,6 +651,7 @@ button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
     clearTimeout(snackT); snackT = setTimeout(() => { $("#snack").hidden = true; }, 5000);
   }
   $("#undo").addEventListener("click", () => { const c = $("#snack").dataset.step; set(c, !get(c)); $("#snack").hidden = true; render(); });
+  $("#next").addEventListener("click", e => { if ($("#next").getAttribute("aria-disabled") === "true") e.preventDefault(); });
   $("#doneBtn").addEventListener("click", () => {
     const c = view(), on = !get(c); set(c, on); render();
     snack(on ? "STEP " + (IDS.indexOf(c) + 1) + " を完了にしました" : "完了を取り消しました", c);
@@ -667,5 +669,5 @@ button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
   render();
 })();
 </script>
-<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline)d.hidden=true;else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script></body>
+<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;dispatchEvent(new Event('pc-check-resize'));}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline){d.hidden=true;dispatchEvent(new Event('pc-check-resize'));}else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script></body>
 </html>
