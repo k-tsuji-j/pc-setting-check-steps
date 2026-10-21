@@ -418,6 +418,52 @@ body.embed { background: var(--bg); }
 .embed .snack { position: static; transform: none; margin: 12px auto 0; width: fit-content; }
 .embed .vinline { margin-top: 0; }
 @media (max-width: 620px) { .embed .how { grid-template-columns: 1fr; } }
+/* ---- 埋め込み幅：縦を詰めて、完了ボタンまで1画面に入れる ---- */
+.embed .top .wrap { padding-block: 4px; }
+.embed .rail a { min-height: 36px; }
+.embed .rail .dot { width: 24px; height: 24px; font-size: .75rem; }
+.embed .lp { height: 3px; }
+.embed main { padding-block: 12px 8px; }
+.embed .panel { gap: 10px; }
+.embed .phead h1 { font-size: 1.25rem; gap: 8px; }
+.embed .stepno { font-size: .75rem; padding: 1px 8px; }
+.embed .status { margin-top: 2px; font-size: .75rem; padding: 1px 8px; }
+.embed .sheet { padding: 12px 16px; border-radius: 12px; }
+/* ゴール：説明と画像を横に並べ、画像の高さを抑える */
+.embed .goal { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); gap: 16px; padding-block: 10px; }
+.embed .goal h2 { font-size: 1rem; margin-bottom: 4px; }
+.embed .goal h2 .ico { width: 1.1em; height: 1.1em; }
+.embed .checks li { font-size: .8125rem; line-height: 1.55; grid-template-columns: 16px 1fr; gap: 6px; }
+.embed .checks li .ico { width: 16px; height: 16px; margin-top: 2px; }
+.embed .goal-fig img { max-height: 170px; }
+/* やり方：行の間隔を詰め、注意文と「わからない場合」を小さな1行ずつに */
+.embed .how { gap: 16px; }
+.embed .how-text { gap: 4px; }
+.embed .sec { font-size: .9375rem; }
+.embed .seq li { padding: 5px 0; font-size: .875rem; line-height: 1.55; grid-template-columns: 1.6em 1fr; gap: 4px; }
+.embed .seq li::before { font-size: .9375rem; }
+.embed kbd { font-size: .75rem; padding: 0 5px; }
+.embed .hnote { font-size: .75rem; line-height: 1.5; grid-template-columns: 13px 1fr; gap: 5px; margin-top: 2px; }
+.embed .hnote .ico { width: 13px; height: 13px; margin-top: 2px; }
+.embed .howto { margin-top: 4px; }
+.embed .howto summary { min-height: 32px; padding: 0 2px; border: 0; background: none; font-size: .8125rem; text-decoration: underline; text-underline-offset: .25em; }
+.embed .howto summary:hover { background: none; color: var(--primary-hover); }
+/* 動画：見出し・説明・ボタンを1行に */
+.embed .video.sheet { padding-block: 6px; gap: 12px; }
+.embed .video .vtext { gap: 8px; }
+.embed .video .sec { font-size: .875rem; }
+.embed .video p { font-size: .75rem; }
+.embed .vlink { min-height: 36px; font-size: .875rem; padding: 0 14px; }
+.embed .trust { font-size: .75rem; line-height: 1.5; gap: 6px; }
+.embed .trust .ico { width: 14px; height: 14px; }
+/* 下のボタン */
+.embed .bar { margin-top: 8px; }
+.embed .bar .wrap { padding-block: 8px; }
+.embed .btn { min-height: 40px; font-size: .9375rem; }
+@media (max-width: 620px) {
+  .embed .how, .embed .goal { grid-template-columns: 1fr; }
+  .embed .goal-fig img { max-height: none; }
+}
 </style>
 
 </head>
