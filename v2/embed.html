@@ -51,13 +51,8 @@ kbd { font-family: inherit; font-size: .875rem; font-weight: 700; padding: 0 8px
 .playbtn.replay { left: auto; bottom: auto; right: 12px; top: 12px; transform: none; font-size: 15px; padding: 6px 16px; }
 .stage.playing .playbtn.replay { display: block; }
 
-.stage svg [class*="a1-t"], .stage svg [class*="a3-w"], .stage svg .a2-icon { transform-box: fill-box; }
 .a1-cur { transform: translate(560px,170px); }
-.a1-rip, .a2-rip1, .a2-rip2, .a3-rip1, .a3-rip2 { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.a1-end, .a2-end, .a3-end, .a2-menu { opacity: 0; }
 .a2-cur { transform: translate(650px,120px); }
-.a3-cur { transform: translate(620px,300px); }
-.a3-w1-x, .a3-w2-x, .a3-w3-x, .a3-w4-x { opacity: 0; }
 .a2-icon { transform-origin: center; }
 
 .stage.playing .a1-cur { animation: a1cur 9s ease-in-out forwards; }
@@ -71,10 +66,6 @@ kbd { font-family: inherit; font-size: .875rem; font-weight: 700; padding: 0 8px
   0%,19%{opacity:0;transform:scale(.5)} 20%{opacity:1;transform:scale(.6)} 26%{opacity:0;transform:scale(2.2)}
   47%{opacity:0;transform:scale(.5)} 48%{opacity:1;transform:scale(.6)} 54%{opacity:0;transform:scale(2.2)}
   75%{opacity:0;transform:scale(.5)} 76%{opacity:1;transform:scale(.6)} 82%,100%{opacity:0;transform:scale(2.2)} }
-@keyframes a1t2 { 0%,20%{opacity:1;transform:translateY(0)} 26%,100%{opacity:0;transform:translateY(-10px)} }
-@keyframes a1t3 { 0%,26%{opacity:1;transform:translateX(0)} 32%,48%{opacity:1;transform:translateX(-144px)} 54%,100%{opacity:0;transform:translateX(-144px) translateY(-10px)} }
-@keyframes a1t4 { 0%,26%{opacity:1;transform:translateX(0)} 32%,54%{opacity:1;transform:translateX(-144px)} 60%,76%{opacity:1;transform:translateX(-288px)} 82%,100%{opacity:0;transform:translateX(-288px) translateY(-10px)} }
-@keyframes a1end { 0%,88%{opacity:0} 95%,100%{opacity:1} }
 
 .stage.playing .a2-cur { animation: a2cur 8s ease-in-out forwards; }
 .stage.playing .a2-rip1 { animation: a2rip1 8s linear forwards; }
@@ -89,24 +80,6 @@ kbd { font-family: inherit; font-size: .875rem; font-weight: 700; padding: 0 8px
 @keyframes a2icon { 0%,52%{opacity:1;transform:scale(1)} 62%,100%{opacity:0;transform:scale(.2)} }
 @keyframes a2end { 0%,68%{opacity:0} 76%,100%{opacity:1} }
 
-.stage.playing .a3-cur { animation: a3cur 9s ease-in-out forwards; }
-.stage.playing .a3-w2-x { animation: a3x2 9s linear forwards; }
-.stage.playing .a3-w1-x { animation: a3x1 9s linear forwards; }
-.stage.playing .a3-w2 { animation: a3w2 9s ease-in forwards; }
-.stage.playing .a3-w1 { animation: a3w1 9s ease-in forwards; }
-.stage.playing .a3-rip1 { animation: a3rip1 9s linear forwards; }
-.stage.playing .a3-rip2 { animation: a3rip2 9s linear forwards; }
-.stage.playing .a3-pill { animation: a3pill 9s linear forwards; }
-.stage.playing .a3-end { animation: a3end 9s linear forwards; }
-@keyframes a3cur { 0%{transform:translate(620px,300px)} 14%,34%{transform:translate(468px,48px)} 46%,100%{transform:translate(228px,48px)} }
-@keyframes a3x2 { 0%,12%{opacity:0} 14%,36%{opacity:1} 38%,100%{opacity:0} }
-@keyframes a3x1 { 0%,44%{opacity:0} 46%,66%{opacity:1} 68%,100%{opacity:0} }
-@keyframes a3rip1 { 0%,21%{opacity:0;transform:scale(.5)} 22%{opacity:1;transform:scale(.6)} 29%,100%{opacity:0;transform:scale(2.2)} }
-@keyframes a3rip2 { 0%,53%{opacity:0;transform:scale(.5)} 54%{opacity:1;transform:scale(.6)} 61%,100%{opacity:0;transform:scale(2.2)} }
-@keyframes a3w2 { 0%,24%{opacity:1;transform:scale(1)} 34%,100%{opacity:0;transform:scale(.6)} }
-@keyframes a3w1 { 0%,56%{opacity:1;transform:scale(1)} 66%,100%{opacity:0;transform:scale(.6)} }
-@keyframes a3pill { 0%,72%{opacity:1} 76%,100%{opacity:0} }
-@keyframes a3end { 0%,74%{opacity:0} 82%,100%{opacity:1} }
 
 /* 「動きで見る」は利用者が▶を押して始める説明用の動き。OSの「視覚効果を減らす」設定でも、短縮せず最後まで再生する */
 /* ===== STEP1：実際の Chrome に近いタブの閉じ方（マウスを乗せる → ✕ → タブが横に縮んで消え、右のタブが詰まる） ===== */
@@ -396,7 +369,7 @@ main { padding-block: 16px 104px; }
 .vclose { width: 44px; height: 44px; border-radius: 50%; border: 0; background: none; cursor: pointer; color: var(--text-2); display: grid; place-items: center; }
 .vclose:hover { background: var(--surface); }
 .vbox { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
-.vbox iframe, .vbox video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.vbox video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
 .verr { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: #fff; }
 button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
 .vinline { background: var(--bg); border: 2px solid #C5221F; border-radius: 16px; padding: 12px 16px 16px; }
@@ -664,7 +637,7 @@ body.embed { min-height: var(--avail, auto); display: flex; flex-direction: colu
 </section>
   <p class="trust"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>保存していない作業は、先に保存してください。このページは、受験前にパソコンの状態を整えるための手順です。設定やファイルを変更することはなく、閉じたタブやアプリはあとから開き直せます。</span></p>
 </main>
-<div class="vinline" id="vdlg" hidden><div class="vdlg-head"><h2>動画で確認</h2><button type="button" class="vclose" id="vclose" aria-label="動画を閉じる"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="vbox"><video id="vplay" controls playsinline preload="metadata" hidden></video><iframe id="vframe" title="解説動画" referrerpolicy="strict-origin-when-cross-origin" hidden allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p class="verr" id="verr" hidden>動画を読み込めませんでした。通信状態を確認し、閉じてからもう一度「動画を見る」を押してください。</p></div></div>
+<div class="vinline" id="vdlg" hidden><div class="vdlg-head"><h2>動画で確認</h2><button type="button" class="vclose" id="vclose" aria-label="動画を閉じる"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="vbox"><video id="vplay" controls playsinline preload="metadata"></video><p class="verr" id="verr" hidden>動画を読み込めませんでした。通信状態を確認し、閉じてからもう一度「動画を見る」を押してください。</p></div></div>
 <div class="snack" id="snack" role="status" aria-live="polite" hidden><span id="snackMsg"></span><button type="button" id="undo">元に戻す</button></div>
 
 <nav class="bar" aria-label="ステップの操作"><div class="wrap">
@@ -743,5 +716,5 @@ body.embed { min-height: var(--avail, auto); display: flex; flex-direction: colu
   render();
 })();
 </script>
-<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;dispatchEvent(new Event('pc-check-resize'));}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline){d.hidden=true;dispatchEvent(new Event('pc-check-resize'));}else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script><script>(()=>{if(window.parent===window)return;document.documentElement.style.overflowY='hidden';const send=()=>parent.postMessage({type:'pc-check-height',height:Math.ceil(document.documentElement.getBoundingClientRect().height)},'*');const ro=new ResizeObserver(send);ro.observe(document.body);ro.observe(document.documentElement);addEventListener('load',send);addEventListener('pc-check-resize',()=>{requestAnimationFrame(send);setTimeout(send,300);});addEventListener('hashchange',()=>{send();parent.postMessage({type:'pc-check-top'},'*');});addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-measure')send();});send();})();</script><script>(()=>{const root=document.documentElement,body=document.body;let avail=window.parent===window?innerHeight:800;let busy=false;const narrow=()=>innerWidth<=620;const videoOpen=()=>{const d=document.getElementById('vdlg');return d&&!d.hidden;};const fit=()=>{if(busy||videoOpen())return;busy=true;body.style.setProperty('--avail','auto');if(narrow()){body.style.setProperty('--k',1);body.style.setProperty('--avail','auto');busy=false;return;}let lo=.6,hi=1.6;for(let i=0;i<9;i++){const k=(lo+hi)/2;body.style.setProperty('--k',k.toFixed(3));if(body.getBoundingClientRect().height<=avail)lo=k;else hi=k;}body.style.setProperty('--k',lo.toFixed(3));body.style.setProperty('--avail',avail+'px');busy=false;};addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-viewport'&&isFinite(e.data.height)&&e.data.height>300){avail=e.data.height;fit();}});addEventListener('resize',()=>{if(window.parent===window)avail=innerHeight;fit();});addEventListener('hashchange',()=>setTimeout(fit,0));document.querySelectorAll('details').forEach(x=>x.addEventListener('toggle',fit));addEventListener('load',fit);fit();if(window.parent!==window)parent.postMessage({type:'pc-check-ask-viewport'},'*');})();</script></body>
+<script>(()=>{const S={"step1": "../video/step3.mp4", "step2": "../video/step2.mp4", "step3": "../video/step1.mp4"};const d=document.getElementById('vdlg'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const src=S[step()]||S.step1;er.hidden=true;v.hidden=false;if(v.getAttribute('src')!==src)v.src=src;if(inline){b.closest('.video').after(d);d.hidden=false;dispatchEvent(new Event('pc-check-resize'));}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>v.pause();const close=()=>{stop();if(inline){d.hidden=true;dispatchEvent(new Event('pc-check-resize'));}else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script><script>(()=>{if(window.parent===window)return;document.documentElement.style.overflowY='hidden';const send=()=>parent.postMessage({type:'pc-check-height',height:Math.ceil(document.documentElement.getBoundingClientRect().height)},'*');const ro=new ResizeObserver(send);ro.observe(document.body);ro.observe(document.documentElement);addEventListener('load',send);addEventListener('pc-check-resize',()=>{requestAnimationFrame(send);setTimeout(send,300);});addEventListener('hashchange',()=>{send();parent.postMessage({type:'pc-check-top'},'*');});addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-measure')send();});send();})();</script><script>(()=>{const root=document.documentElement,body=document.body;let avail=window.parent===window?innerHeight:800;let busy=false;const narrow=()=>innerWidth<=620;const videoOpen=()=>{const d=document.getElementById('vdlg');return d&&!d.hidden;};const fit=()=>{if(busy||videoOpen())return;busy=true;body.style.setProperty('--avail','auto');if(narrow()){body.style.setProperty('--k',1);body.style.setProperty('--avail','auto');busy=false;return;}let lo=.6,hi=1.6;for(let i=0;i<9;i++){const k=(lo+hi)/2;body.style.setProperty('--k',k.toFixed(3));if(body.getBoundingClientRect().height<=avail)lo=k;else hi=k;}body.style.setProperty('--k',lo.toFixed(3));body.style.setProperty('--avail',avail+'px');busy=false;};addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-viewport'&&isFinite(e.data.height)&&e.data.height>300){avail=e.data.height;fit();}});addEventListener('resize',()=>{if(window.parent===window)avail=innerHeight;fit();});addEventListener('hashchange',()=>setTimeout(fit,0));document.querySelectorAll('details').forEach(x=>x.addEventListener('toggle',fit));addEventListener('load',fit);fit();if(window.parent!==window)parent.postMessage({type:'pc-check-ask-viewport'},'*');})();</script></body>
 </html>
