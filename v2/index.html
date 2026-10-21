@@ -395,10 +395,11 @@ main { padding-block: 16px 104px; }
 .vdlg-head h2 { font-size: 1.125rem; }
 .vclose { width: 44px; height: 44px; border-radius: 50%; border: 0; background: none; cursor: pointer; color: var(--text-2); display: grid; place-items: center; }
 .vclose:hover { background: var(--surface); }
-.vdlg .vbox { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
-.vdlg iframe, .vdlg video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.vbox { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+.vbox iframe, .vbox video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
 .verr { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: #fff; }
 button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
+.vinline { background: var(--bg); border: 2px solid #C5221F; border-radius: 16px; padding: 12px 16px 16px; }
 </style>
 
 </head>
@@ -539,7 +540,7 @@ button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
     <div class="how-text">
       <h2 class="sec">やり方</h2>
       <ol class="seq"><li><span>画面上部のタブの並びを見る</span></li><li><span>受験ページ以外のタブの ✕ をクリック</span></li><li><span>受験ページのタブだけになるまで繰り返す</span></li></ol>
-      <p class="hnote"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>このページのタブも閉じてかまいません。閉じた場合は、これで確認は終わりです。</span></p>
+      
       
     </div>
     <figure class="fig anim" data-dur="9">
@@ -666,5 +667,5 @@ button.vlink { font: inherit; font-weight: 700; cursor: pointer; }
   render();
 })();
 </script>
-<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();d.close?d.close():d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);})();</script></body>
+<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline)d.hidden=true;else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script></body>
 </html>
