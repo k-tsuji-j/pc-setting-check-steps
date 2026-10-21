@@ -341,3 +341,39 @@ details.howto .pairgrid img.bar { max-width: 360px; }
 .goalblk .fig svg { border-color: var(--ok); }
 .goalblk ul.check li { font-weight: 700; }
 .grid3 .goalcap { font-size: 15px; }
+
+/* ===== STEP3：受験ページと画面共有だけ残し、ほかの4つの画面を順に閉じる（12秒） ===== */
+.t3-w1, .t3-w2, .t3-w3, .t3-w4 { transform-box: fill-box; transform-origin: center; }
+.t3-w1-x, .t3-w2-x, .t3-w3-x, .t3-w4-x, .t3-end { opacity: 0; }
+.t3-r1, .t3-r2, .t3-r3, .t3-r4 { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.t3-cur { transform: translate(600px, 300px); }
+.stage.playing .t3-cur { animation: t3cur 12s ease-in-out forwards; }
+.stage.playing .t3-w1-x { animation: t3x1 12s linear forwards; }
+.stage.playing .t3-w2-x { animation: t3x2 12s linear forwards; }
+.stage.playing .t3-w3-x { animation: t3x3 12s linear forwards; }
+.stage.playing .t3-w4-x { animation: t3x4 12s linear forwards; }
+.stage.playing .t3-w1 { animation: t3w1 12s ease-in forwards; }
+.stage.playing .t3-w2 { animation: t3w2 12s ease-in forwards; }
+.stage.playing .t3-w3 { animation: t3w3 12s ease-in forwards; }
+.stage.playing .t3-w4 { animation: t3w4 12s ease-in forwards; }
+.stage.playing .t3-r1 { animation: t3r1 12s linear forwards; }
+.stage.playing .t3-r2 { animation: t3r2 12s linear forwards; }
+.stage.playing .t3-r3 { animation: t3r3 12s linear forwards; }
+.stage.playing .t3-r4 { animation: t3r4 12s linear forwards; }
+.stage.playing .t3-pill { animation: t3pill 12s linear forwards; }
+.stage.playing .t3-end { animation: t3end 12s linear forwards; }
+@keyframes t3cur { 0%{transform:translate(600px,300px)} 10%,18%{transform:translate(228px,28px)} 26%,38%{transform:translate(728px,28px)} 46%,58%{transform:translate(228px,178px)} 66%,100%{transform:translate(728px,178px)} }
+@keyframes t3x1 { 0%,8%{opacity:0} 10%,19%{opacity:1} 20%,100%{opacity:0} }
+@keyframes t3x2 { 0%,24%{opacity:0} 26%,39%{opacity:1} 40%,100%{opacity:0} }
+@keyframes t3x3 { 0%,44%{opacity:0} 46%,59%{opacity:1} 60%,100%{opacity:0} }
+@keyframes t3x4 { 0%,64%{opacity:0} 66%,79%{opacity:1} 80%,100%{opacity:0} }
+@keyframes t3w1 { 0%,19%{opacity:1;transform:scale(1)} 25%,100%{opacity:0;transform:scale(.6)} }
+@keyframes t3w2 { 0%,39%{opacity:1;transform:scale(1)} 45%,100%{opacity:0;transform:scale(.6)} }
+@keyframes t3w3 { 0%,59%{opacity:1;transform:scale(1)} 65%,100%{opacity:0;transform:scale(.6)} }
+@keyframes t3w4 { 0%,79%{opacity:1;transform:scale(1)} 85%,100%{opacity:0;transform:scale(.6)} }
+@keyframes t3r1 { 0%,17%{opacity:0;transform:scale(.5)} 18%{opacity:1;transform:scale(.6)} 23%,100%{opacity:0;transform:scale(2.2)} }
+@keyframes t3r2 { 0%,37%{opacity:0;transform:scale(.5)} 38%{opacity:1;transform:scale(.6)} 43%,100%{opacity:0;transform:scale(2.2)} }
+@keyframes t3r3 { 0%,57%{opacity:0;transform:scale(.5)} 58%{opacity:1;transform:scale(.6)} 63%,100%{opacity:0;transform:scale(2.2)} }
+@keyframes t3r4 { 0%,77%{opacity:0;transform:scale(.5)} 78%{opacity:1;transform:scale(.6)} 83%,100%{opacity:0;transform:scale(2.2)} }
+@keyframes t3pill { 0%,86%{opacity:1} 89%,100%{opacity:0} }
+@keyframes t3end { 0%,88%{opacity:0} 93%,100%{opacity:1} }
