@@ -108,7 +108,7 @@ kbd { font-family: inherit; font-size: .875rem; font-weight: 700; padding: 0 8px
 @keyframes a3pill { 0%,72%{opacity:1} 76%,100%{opacity:0} }
 @keyframes a3end { 0%,74%{opacity:0} 82%,100%{opacity:1} }
 
-@media (prefers-reduced-motion: reduce) { .stage.playing * { animation-duration: .01s !important; } }
+/* 「動きで見る」は利用者が▶を押して始める説明用の動き。OSの「視覚効果を減らす」設定でも、短縮せず最後まで再生する */
 /* ===== STEP1：実際の Chrome に近いタブの閉じ方（マウスを乗せる → ✕ → タブが横に縮んで消え、右のタブが詰まる） ===== */
 .a1-t2, .a1-t3, .a1-t4 { transform-origin: left center; }
 .a1-t2-hv, .a1-t3-hv, .a1-t4-hv { opacity: 0; }
@@ -235,7 +235,8 @@ main { padding-block: 24px 128px; }
   .btn { font-size: .9375rem; padding: 0 12px; }
   main { padding-block: 16px 160px; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation-duration: .01s !important; } }
+/* 視覚効果を減らす設定では装飾の切り替え効果だけ止める。「動きで見る」は利用者が▶を押して始める説明用の動きなので、短縮せず最後まで再生する */
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 .stage .playbtn svg.ico { width: 1em; height: 1em; border: 0; border-radius: 0; }
 
 /* ===== Google 風のサービス画面（Material の考え方：面の段差・丸いボタン・上部の進行バー・スナックバー） ===== */
