@@ -418,51 +418,60 @@ body.embed { background: var(--bg); }
 .embed .snack { position: static; transform: none; margin: 12px auto 0; width: fit-content; }
 .embed .vinline { margin-top: 0; }
 @media (max-width: 620px) { .embed .how { grid-template-columns: 1fr; } }
-/* ---- 埋め込み幅：縦を詰めて、完了ボタンまで1画面に入れる ---- */
-.embed .top .wrap { padding-block: 4px; }
-.embed .rail a { min-height: 36px; }
-.embed .rail .dot { width: 24px; height: 24px; font-size: .75rem; }
-.embed .lp { height: 3px; }
-.embed main { padding-block: 12px 8px; }
-.embed .panel { gap: 10px; }
-.embed .phead h1 { font-size: 1.25rem; gap: 8px; }
-.embed .stepno { font-size: .75rem; padding: 1px 8px; }
-.embed .status { margin-top: 2px; font-size: .75rem; padding: 1px 8px; }
-.embed .sheet { padding: 12px 16px; border-radius: 12px; }
-/* ゴール：説明と画像を横に並べ、画像の高さを抑える */
-.embed .goal { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); gap: 16px; padding-block: 10px; }
-.embed .goal h2 { font-size: 1rem; margin-bottom: 4px; }
-.embed .goal h2 .ico { width: 1.1em; height: 1.1em; }
-.embed .checks li { font-size: .8125rem; line-height: 1.55; grid-template-columns: 16px 1fr; gap: 6px; }
-.embed .checks li .ico { width: 16px; height: 16px; margin-top: 2px; }
-.embed .goal-fig img { max-height: 170px; }
-/* やり方：行の間隔を詰め、注意文と「わからない場合」を小さな1行ずつに */
-.embed .how { gap: 16px; }
-.embed .how-text { gap: 4px; }
-.embed .sec { font-size: .9375rem; }
-.embed .seq li { padding: 5px 0; font-size: .875rem; line-height: 1.55; grid-template-columns: 1.6em 1fr; gap: 4px; }
-.embed .seq li::before { font-size: .9375rem; }
-.embed kbd { font-size: .75rem; padding: 0 5px; }
-.embed .hnote { font-size: .75rem; line-height: 1.5; grid-template-columns: 13px 1fr; gap: 5px; margin-top: 2px; }
-.embed .hnote .ico { width: 13px; height: 13px; margin-top: 2px; }
-.embed .howto { margin-top: 4px; }
-.embed .howto summary { min-height: 32px; padding: 0 2px; border: 0; background: none; font-size: .8125rem; text-decoration: underline; text-underline-offset: .25em; }
+/* ---- 埋め込み幅：画面の高さに合わせて伸び縮みする ----
+   --k は JS が「上のステップ表示〜完了ボタンが、見えている画面の高さにちょうど収まる」値を探して入れる（0.6〜1.6）。
+   図の高さ・余白だけが伸び縮みし、文字の大きさは変えない（読みやすさを保つ） */
+.embed { --k: 1; }
+/* 図を伸ばしきっても余る高さは「やり方」の欄に配分し、画面の高さいっぱいまで使う */
+body.embed { min-height: var(--avail, auto); display: flex; flex-direction: column; }
+.embed main { flex: 1; display: flex; flex-direction: column; }
+.embed .panel:not([hidden]) { flex: 1; grid-template-rows: auto auto 1fr auto; }
+.embed #p-done:not([hidden]) { grid-template-rows: auto; align-content: center; }
+.embed .top .wrap { padding-block: calc(6px * var(--k)); }
+.embed .rail a { min-height: 40px; }
+.embed .rail .dot { width: 26px; height: 26px; font-size: .8125rem; }
+.embed main { padding-block: calc(16px * var(--k)) calc(8px * var(--k)); }
+.embed .panel { gap: calc(14px * var(--k)); }
+.embed .phead h1 { font-size: 1.375rem; gap: 10px; }
+.embed .stepno { font-size: .8125rem; padding: 2px 8px; }
+.embed .status { margin-top: 3px; font-size: .8125rem; padding: 1px 10px; }
+.embed .sheet { padding: calc(14px * var(--k)) 18px; border-radius: 12px; }
+.embed .goal { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); gap: 18px; }
+.embed .goal h2 { font-size: 1.0625rem; margin-bottom: calc(6px * var(--k)); }
+.embed .checks { gap: calc(4px * var(--k)); }
+.embed .checks li { font-size: .875rem; line-height: 1.6; grid-template-columns: 18px 1fr; gap: 6px; }
+.embed .checks li .ico { width: 18px; height: 18px; margin-top: 2px; }
+.embed .goal-fig img { max-height: calc(170px * var(--k)); }
+.embed .how { gap: 18px; align-items: stretch; }
+.embed .how-text { gap: calc(6px * var(--k)); }
+.embed .sec { font-size: 1rem; }
+.embed .seq li { padding: calc(7px * var(--k)) 0; font-size: .9375rem; line-height: 1.6; grid-template-columns: 1.7em 1fr; gap: 6px; }
+.embed .seq li::before { font-size: 1rem; }
+.embed kbd { font-size: .8125rem; padding: 0 6px; }
+.embed .hnote { font-size: .8125rem; line-height: 1.55; grid-template-columns: 14px 1fr; gap: 6px; margin-top: calc(4px * var(--k)); }
+.embed .hnote .ico { width: 14px; height: 14px; margin-top: 3px; }
+.embed .howto { margin-top: auto; padding-top: calc(4px * var(--k)); }
+.embed .howto summary { min-height: 36px; padding: 0 2px; border: 0; background: none; font-size: .875rem; text-decoration: underline; text-underline-offset: .25em; }
 .embed .howto summary:hover { background: none; color: var(--primary-hover); }
-/* 動画：見出し・説明・ボタンを1行に */
-.embed .video.sheet { padding-block: 6px; gap: 12px; }
-.embed .video .vtext { gap: 8px; }
-.embed .video .sec { font-size: .875rem; }
-.embed .video p { font-size: .75rem; }
-.embed .vlink { min-height: 36px; font-size: .875rem; padding: 0 14px; }
-.embed .trust { font-size: .75rem; line-height: 1.5; gap: 6px; }
-.embed .trust .ico { width: 14px; height: 14px; }
-/* 下のボタン */
-.embed .bar { margin-top: 8px; }
-.embed .bar .wrap { padding-block: 8px; }
-.embed .btn { min-height: 40px; font-size: .9375rem; }
+/* 動きの図：高さを --k で決め、枠いっぱいに比率を保って表示 */
+.embed .how .fig.anim { height: auto; width: 100%; aspect-ratio: 760 / 440; max-height: calc(250px * var(--k)); align-self: center; }
+.embed .fig.anim .stage { flex: 1; height: 100%; }
+.embed .fig.anim .stage > svg { height: 100%; }
+.embed .video.sheet { padding-block: calc(8px * var(--k)); gap: 14px; }
+.embed .video .vtext { gap: 10px; }
+.embed .video .sec { font-size: .9375rem; }
+.embed .video p { font-size: .8125rem; }
+.embed .vlink { min-height: 40px; font-size: .9375rem; padding: 0 16px; }
+.embed .trust { font-size: .8125rem; line-height: 1.55; gap: 8px; }
+.embed .trust .ico { width: 16px; height: 16px; }
+.embed .bar { margin-top: calc(8px * var(--k)); }
+.embed .bar .wrap { padding-block: calc(10px * var(--k)); }
+.embed .btn { min-height: 44px; font-size: 1rem; }
 @media (max-width: 620px) {
   .embed .how, .embed .goal { grid-template-columns: 1fr; }
   .embed .goal-fig img { max-height: none; }
+  .embed .how .fig.anim { height: auto; }
+  .embed .fig.anim .stage > svg { height: auto; }
 }
 </style>
 
@@ -731,5 +740,5 @@ body.embed { background: var(--bg); }
   render();
 })();
 </script>
-<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline)d.hidden=true;else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script><script>(()=>{if(window.parent===window)return;document.documentElement.style.overflowY='hidden';const send=()=>parent.postMessage({type:'pc-check-height',height:Math.ceil(document.documentElement.getBoundingClientRect().height)},'*');new ResizeObserver(send).observe(document.body);addEventListener('load',send);addEventListener('hashchange',()=>{send();parent.postMessage({type:'pc-check-top'},'*');});addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-measure')send();});send();})();</script></body>
+<script>(()=>{const S={"step1": {"mp4": "../video/step3.mp4"}, "step2": {"mp4": "../video/step2.mp4"}, "step3": {"mp4": "../video/step1.mp4"}};const d=document.getElementById('vdlg'),f=document.getElementById('vframe'),v=document.getElementById('vplay'),er=document.getElementById('verr');const inline=d.tagName!=='DIALOG';const step=()=>(location.hash.slice(1)||'step1');v.addEventListener('error',()=>{v.hidden=true;er.hidden=false;});document.querySelectorAll('[data-video]').forEach(b=>b.addEventListener('click',()=>{const s=S[step()]||S.step1;er.hidden=true;if(s.mp4){f.hidden=true;v.hidden=false;if(v.getAttribute('src')!==s.mp4)v.src=s.mp4;}else{v.hidden=true;f.hidden=false;f.src='https://www.youtube.com/embed/'+s.yt+'?rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);}if(inline){b.closest('.video').after(d);d.hidden=false;}else if(d.showModal)d.showModal();else d.setAttribute('open','');}));const stop=()=>{v.pause();f.removeAttribute('src');};const close=()=>{stop();if(inline)d.hidden=true;else if(d.close)d.close();else d.removeAttribute('open');};document.getElementById('vclose').addEventListener('click',close);addEventListener('hashchange',()=>{if(inline)close();});if(!inline){d.addEventListener('click',e=>{if(e.target===d)close();});d.addEventListener('close',stop);}})();</script><script>(()=>{if(window.parent===window)return;document.documentElement.style.overflowY='hidden';const send=()=>parent.postMessage({type:'pc-check-height',height:Math.ceil(document.documentElement.getBoundingClientRect().height)},'*');new ResizeObserver(send).observe(document.body);addEventListener('load',send);addEventListener('hashchange',()=>{send();parent.postMessage({type:'pc-check-top'},'*');});addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-measure')send();});send();})();</script><script>(()=>{const root=document.documentElement,body=document.body;let avail=window.parent===window?innerHeight:800;let busy=false;const narrow=()=>innerWidth<=620;const videoOpen=()=>{const d=document.getElementById('vdlg');return d&&!d.hidden;};const fit=()=>{if(busy||videoOpen())return;busy=true;body.style.setProperty('--avail','auto');if(narrow()){body.style.setProperty('--k',1);body.style.setProperty('--avail','auto');busy=false;return;}let lo=.6,hi=1.6;for(let i=0;i<9;i++){const k=(lo+hi)/2;body.style.setProperty('--k',k.toFixed(3));if(body.getBoundingClientRect().height<=avail)lo=k;else hi=k;}body.style.setProperty('--k',lo.toFixed(3));body.style.setProperty('--avail',avail+'px');busy=false;};addEventListener('message',e=>{if(e.data&&e.data.type==='pc-check-viewport'&&isFinite(e.data.height)&&e.data.height>300){avail=e.data.height;fit();}});addEventListener('resize',()=>{if(window.parent===window)avail=innerHeight;fit();});addEventListener('hashchange',()=>setTimeout(fit,0));document.querySelectorAll('details').forEach(x=>x.addEventListener('toggle',fit));addEventListener('load',fit);fit();if(window.parent!==window)parent.postMessage({type:'pc-check-ask-viewport'},'*');})();</script></body>
 </html>
