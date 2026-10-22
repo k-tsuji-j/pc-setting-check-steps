@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>動画の再生確認（診断用）</title>
+<style>
+  :root { --text:#1F2329; --text-2:#4E5661; --border:#DDE1E6; --ok:#1B7A47; --ng:#C0281C; --warn:#8A5300; --bg:#F6F7F9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: "Segoe UI", "BIZ UDPGothic", Meiryo, -apple-system, BlinkMacSystemFont, "Hiragino Sans", Roboto, "Noto Sans JP", sans-serif; line-height: 1.7; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 16px; }
+  h1 { font-size: 1.375rem; margin: 0; }
+  h2 { font-size: 1.0625rem; margin: 0 0 8px; }
+  p { margin: 0; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: .9375rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { width: 16em; color: var(--text-2); font-weight: 700; }
+  td { word-break: break-all; }
+  .ok { color: var(--ok); font-weight: 700; }
+  .ng { color: var(--ng); font-weight: 700; }
+  .wait { color: var(--warn); font-weight: 700; }
+  .players { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .players figure { margin: 0; }
+  .players figcaption { font-size: .875rem; font-weight: 700; margin-bottom: 4px; }
+  .players .box { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; }
+  .players iframe, .players .box > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  textarea { width: 100%; min-height: 160px; font-family: Consolas, monospace; font-size: .8125rem; }
+  button { font: inherit; font-weight: 700; padding: 8px 18px; border-radius: 6px; border: 1px solid #1D5FB8; background: #1D5FB8; color: #fff; cursor: pointer; min-height: 44px; }
+  .note { font-size: .875rem; color: var(--text-2); }
+</style>
+</head>
+<body>
+<main>
+  <h1>動画の再生確認（診断用）</h1>
+  <p class="note">エラー153の原因を調べるためのページです。開いて10秒ほど待ち、このページ全体のスクリーンショットか、下の「結果をコピー」の内容を送ってください。</p>
+
+  <section class="card">
+    <h2>1. このページの状態</h2>
+    <table id="env"></table>
+  </section>
+
+  <section class="card">
+    <h2>2. 外部へ送られる「参照元」（Referer）</h2>
+    <p class="note">確認用の公開サーバー（httpbin.org）に通信し、届いた参照元と、途中の機器が付けた情報を表示します。</p>
+    <table id="ref"></table>
+  </section>
+
+  <section class="card">
+    <h2>3. YouTubeの埋め込み（3つの方法）</h2>
+    <table id="yt"></table>
+    <div class="players" style="margin-top:12px">
+      <figure><figcaption>A：本番と同じ方法（IFrame API）</figcaption><div class="box"><div id="pA"></div></div></figure>
+      <figure><figcaption>B：通常の埋め込み（youtube.com）</figcaption><div class="box"><iframe id="pB" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div></figure>
+      <figure><figcaption>C：通常の埋め込み（youtube-nocookie.com）</figcaption><div class="box"><iframe id="pC" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div></figure>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. 結果</h2>
+    <textarea id="out" readonly></textarea>
+    <p style="margin-top:8px"><button type="button" id="copy">結果をコピー</button> <span id="copied" class="note"></span></p>
+  </section>
+</main>
+<script>
+(() => {
+  const VIDEO = "bcYBeXUJw1w";
+  const R = {};
+  const row = (tbl, k, v, cls) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<th></th><td></td>";
+    tr.children[0].textContent = k; tr.children[1].textContent = v;
+    if (cls) tr.children[1].className = cls;
+    document.getElementById(tbl).appendChild(tr);
+    R[tbl + "：" + k] = v; dump();
+  };
+  const dump = () => { document.getElementById("out").value = Object.entries(R).map(([k, v]) => k + " = " + v).join("\n"); };
+
+  // 1. このページの状態
+  row("env", "日時", new Date().toLocaleString("ja-JP"));
+  row("env", "このページのURL", location.href);
+  row("env", "origin", location.origin);
+  row("env", "iframeの中で開いているか", window.top === window ? "いいえ（単独で表示）" : "はい（埋め込み）");
+  row("env", "このページへの参照元", document.referrer || "（なし）");
+  row("env", "ブラウザー", navigator.userAgent);
+  const meta = document.querySelector('meta[name="referrer"]');
+  row("env", "ページの参照元ポリシー（meta）", meta ? meta.content : "（指定なし）");
+
+  // 2. 外部に届く参照元：fetch と iframe 相当の 2 通り
+  fetch("https://httpbin.org/headers", { referrerPolicy: "strict-origin-when-cross-origin", cache: "no-store" })
+    .then(r => r.json())
+    .then(j => {
+      const h = j.headers || {};
+      const ref = h.Referer || h.referer;
+      row("ref", "サーバーに届いた Referer", ref || "（届いていない）", ref ? "ok" : "ng");
+      const via = ["Via", "X-Forwarded-For", "Forwarded", "X-Bluecoat-Via", "X-Zscaler-Edge", "X-Cache"].filter(k => h[k]).map(k => k + ": " + h[k]);
+      row("ref", "途中の機器の痕跡", via.length ? via.join(" / ") : "（なし）");
+      row("ref", "サーバーに届いたヘッダー一覧", Object.keys(h).join(", "));
+    })
+    .catch(e => row("ref", "サーバーへの通信", "失敗：" + e.message, "ng"));
+
+  // 3. YouTube：A は API でエラーコードを取得、B・C は画面で確認
+  document.getElementById("pB").src = "https://www.youtube.com/embed/" + VIDEO + "?rel=0&playsinline=1";
+  document.getElementById("pC").src = "https://www.youtube-nocookie.com/embed/" + VIDEO + "?rel=0&playsinline=1";
+  row("yt", "B・C の結果", "画面上の表示で確認（エラー153 が出ているか）", "wait");
+  let decided = false;
+  const done = (v, cls) => { if (decided) return; decided = true; row("yt", "A：本番と同じ方法", v, cls); };
+  window.onYouTubeIframeAPIReady = () => {
+    new YT.Player("pA", {
+      videoId: VIDEO, playerVars: { rel: 0, playsinline: 1, origin: location.origin },
+      events: {
+        onReady: e => {
+          const vd = e.target.getVideoData && e.target.getVideoData();
+          if (vd && vd.errorCode) done("再生不可（" + vd.errorCode + "）", "ng");
+          else setTimeout(() => done("再生可能（エラーなし）", "ok"), 1500);
+        },
+        onError: e => done("再生不可（エラー " + e.data + "）", "ng")
+      }
+    });
+  };
+  const sc = document.createElement("script");
+  sc.src = "https://www.youtube.com/iframe_api";
+  sc.onerror = () => done("YouTubeのスクリプトを読み込めない（通信が止められている）", "ng");
+  document.head.appendChild(sc);
+  setTimeout(() => done("10秒たっても応答なし", "ng"), 10000);
+
+  document.getElementById("copy").addEventListener("click", () => {
+    const t = document.getElementById("out");
+    navigator.clipboard.writeText(t.value).then(() => { document.getElementById("copied").textContent = "コピーしました"; })
+      .catch(() => { t.select(); document.getElementById("copied").textContent = "選択しました。Ctrl＋C でコピーしてください"; });
+  });
+})();
+</script>
+</body>
+</html>
